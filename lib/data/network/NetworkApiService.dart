@@ -8,13 +8,35 @@ import 'package:http/http.dart' as http;
 
 class NetworkApiService extends BaseApiServices {
 
+  //Get Request
   @override
   Future getGetApiResponse(String url) async {
+    dynamic responseJson;
+    try {
+      final response = await http.get(
+        Uri.parse(url)
+      ).timeout(Duration(seconds: 10));
+
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException("No Internet Connection");
+    }
+    // print("responseJson");
+    // print(responseJson);
+    return responseJson;
+
+
+  }
+
+  //Post Request
+  @override
+  Future getPostApiResponse(String url, dynamic data) async {
     dynamic responseJson;
 
     try {
       Response response = await post(
         Uri.parse(url),
+        body: data
       ).timeout(Duration(seconds: 10));
 
       responseJson = returnResponse(response);
@@ -22,26 +44,9 @@ class NetworkApiService extends BaseApiServices {
       throw FetchDataException("No Internet Connection");
     }
 
+    // print("responseJson");
+    // print(responseJson);
     return responseJson;
-  }
-
-  @override
-  Future getPostApiResponse(String url, dynamic data) async {
-    dynamic responseJson;
-
-    @override
-    Future getGetApiResponse(String url) async {
-      try {
-        final response = await http.get(
-            Uri.parse(url)
-        ).timeout(Duration(seconds: 10));
-        responseJson = returnResponse(response);
-      } on SocketException {
-        throw FetchDataException("No Internet Connection");
-      }
-
-      return responseJson;
-    }
   }
 
   //Return respone of Api and saves in responseJson var which is above declared

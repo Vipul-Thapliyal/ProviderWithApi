@@ -3,6 +3,8 @@ import 'package:mvvm_tech_brothers/res/components/round_button.dart';
 import 'package:mvvm_tech_brothers/utils/routes/routes_name.dart';
 import 'package:mvvm_tech_brothers/utils/utils.dart';
 import 'package:mvvm_tech_brothers/view/home_screen.dart';
+import 'package:mvvm_tech_brothers/view_model/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -23,8 +25,22 @@ class _LoginViewState extends State<LoginView> {
   FocusNode passwordFocusNode = FocusNode();
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+
+    _obsecurePassword.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print("build");
+    final authViewModel = Provider.of<AuthViewModel>(context);
+
     final height = MediaQuery.of(context).size.height * 1;
 
     return Scaffold(
@@ -79,14 +95,40 @@ class _LoginViewState extends State<LoginView> {
               },
             ),
 
-            SizedBox(height: height * 0.1,), // For Separation
+            SizedBox(height: height * .085,), // For Separation
 
+            //Button to Login
             RoundButton(
               title: "Login",
+              loading: authViewModel.loading,
               onPress: () {
-
+                if(_emailController.text.isEmpty) {
+                  Utils.flushBarErrorMessages("Please enter email", context);
+                } else if(_passwordController.text.isEmpty) {
+                  Utils.flushBarErrorMessages("Please enter password", context);
+                } else if(_passwordController.text.length < 6) {
+                  Utils.flushBarErrorMessages("Please enter 6 digit password", context);
+                } else {
+                  Map data  = {
+                    "email" : _emailController.text.toString(),
+                    "password" : _passwordController.text.toString(),
+                  };
+                  authViewModel.loginApi(data, context);
+                  print("Api Hit");
+                }
               },
             ),
+
+            SizedBox(height: height * .02,), // For Separation
+
+            // Button To Tap if user dont have an account
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, RoutesName.signUp); // Go To SignUp Screen
+              },
+              child: Text("Dont have an account? Sign Up")
+            )
+
           ],
         ),
       )
