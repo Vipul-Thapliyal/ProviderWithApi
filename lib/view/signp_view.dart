@@ -109,10 +109,13 @@ class _SignUpViewState extends State<SignUpView> {
                   } else if(_passwordController.text.length < 6) {
                     Utils.flushBarErrorMessages("Please enter 6 digit password", context);
                   } else {
+                    final headers = {'Content-Type': 'application/json'};
+
                     Map data  = {
                       "email" : _emailController.text.toString(),
                       "password" : _passwordController.text.toString(),
                     };
+
                     authViewModel.signUpApi(data, context);
                     print("Api Hit");
                   }

@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class Utils {
 
+
   // Method For changing focus to next Text form field
   static void fieldFocusChange(BuildContext context, FocusNode current, FocusNode nextFocus) {
     current.unfocus(); // unfocussing current textformfield

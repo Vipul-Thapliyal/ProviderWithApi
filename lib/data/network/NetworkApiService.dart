@@ -49,7 +49,7 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
-  //Return respone of Api and saves in responseJson var which is above declared
+  //Return response of Api and saves in responseJson var which is above declared
   dynamic returnResponse(http.Response response) {
     switch(response.statusCode) {
       case 200:

@@ -17,15 +17,15 @@ class AuthRepository {
     }
   }
 
-  //For Registering User // Signing Up user // If user dont have an account
+  //For Registering User // Signing Up user // If user don't have an account
   Future<dynamic> signUpApi(dynamic data) async {
     try {
+      // dynamic response = await _apiServices.getPostApiResponse(AppUrl.registerEndPoint, data);
       dynamic response = await _apiServices.getPostApiResponse(AppUrl.registerEndPoint, data);
       return response;
     } catch(e) {
       throw e;
     }
   }
-
 
 }
